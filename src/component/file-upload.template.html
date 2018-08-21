@@ -1,5 +1,5 @@
 <div class="content">
-    <input type="file" id="files" cp-attr.change="$ctrl.onSelectFile()" name="files[]" style="display: none;" />
+    <input type="file" id="files" cp-attr.change="$ctrl.onSelectFile()" name="files[]" cp-model="$ctrl.file" style="display: none;" />
 
     <button class="btn" cp-click="$ctrl.filePicker()">
         <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -17,7 +17,7 @@
         Selecionar
     </button>
 
-    <button class="btn" cp-disabled="$ctrl.uploadedFile">
+    <button class="btn" cp-disabled="!$ctrl.file">
         <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             viewBox="0 0 486.3 486.3" style="enable-background:new 0 0 486.3 486.3;" xml:space="preserve">
             <path d="M395.5,135.8c-5.2-30.9-20.5-59.1-43.9-80.5c-26-23.8-59.8-36.9-95-36.9c-27.2,0-53.7,7.8-76.4,22.5
@@ -35,7 +35,7 @@
         Enviar
     </button>
 
-    <button class="btn" cp-disabled="$ctrl.uploadedFile" class="clean-button">
+    <button class="btn" cp-disabled="!$ctrl.file" cp-click="$ctrl.clearCurrentFile()" class="clean-button">
         <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
             viewBox="0 0 486.4 486.4" style="enable-background:new 0 0 486.4 486.4;" xml:space="preserve">
             <path d="M446,70H344.8V53.5c0-29.5-24-53.5-53.5-53.5h-96.2c-29.5,0-53.5,24-53.5,53.5V70H40.4c-7.5,0-13.5,6-13.5,13.5
@@ -52,7 +52,7 @@
         Limpar
     </button>
     <div>
-        <div class="alert-empty" cp-if="$ctrl.file">
+        <div class="alert-empty" cp-if="!$ctrl.file">
             <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                 width="438.533px" height="438.533px" viewBox="0 0 438.533 438.533" style="enable-background:new 0 0 438.533 438.533;"
                 xml:space="preserve">
@@ -70,7 +70,7 @@
                c1.711,1.714,2.573,3.901,2.573,6.567v146.179h27.401c2.669,0,4.859,0.855,6.57,2.566c1.704,1.712,2.566,3.901,2.566,6.567v45.683
                H292.359z" />
             </svg>
-            Selecione um arquivo ou arraste e solte aqui
+            Selecione um arquivo ou arraste e solte aqui!
         </div>
         <div class="alert-has-file" cp-else>
             <div style="  display: inline-block;">
@@ -86,8 +86,8 @@
                 </svg>
             </div>
             <div style="display: inline-block;">
-                <h4>ALGUMA COISA.TXT</h4>
-                <h5>200MB</h5>
+                <p style="font-size: 1.3rem;">[[$ctrl.fileContent.name]]</p>
+                <p style="font-size: 0.9rem;">[[$ctrl.size]]</p>
             </div>
             <div style="padding-left: 40px">
                 <table>
