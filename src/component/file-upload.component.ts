@@ -1,9 +1,10 @@
+import axios from 'axios';
+
 export class CapivaraFileupload {
     public $constants;
     public $functions;
     public $bindings;
 
-    private uploadedFile: boolean
     private element
     private file
     private fileContent: File
@@ -44,5 +45,19 @@ export class CapivaraFileupload {
         } else {
             return fileSize + ' ' + sizes[i]
         }
+    }
+
+    uploadFile() {
+        axios({
+            method: 'post',
+            url: this.$bindings.url,
+            data: {
+                firstName: 'Fred',
+                lastName: 'Flintstone'
+            }
+        })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 }
