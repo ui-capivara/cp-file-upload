@@ -1,5 +1,5 @@
 <div class="content">
-    <input type="file" id="files" cp-attr.change="$ctrl.onSelectFile()" name="files[]" cp-model="$ctrl.file" style="display: none;" />
+    <input type="file" cp-attr.accept="$ctrl.acceptedFiles" cp-attr.change="$ctrl.onSelectFile()" name="files[]" cp-model="$ctrl.file" style="display: none;" />
 
     <button class="btn" cp-click="$ctrl.filePicker()">
         <svg height="18px" width="18px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"

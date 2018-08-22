@@ -11,7 +11,9 @@
 
 <body>
 
-    <cp-file-upload my-parameter="$ctrl.message"></cp-file-upload>
+    <cp-file-upload 
+        accepted-files="$ctrl.acceptedFiles"
+    ></cp-file-upload>
 
     <script src="../dist/cp-file-upload.js"></script>
 
@@ -19,6 +21,7 @@
         class MyController {
             constructor() {
                 this.message = 'Hello world - CapivaraJS';
+                this.acceptedFiles = ".jpg, .jpeg, .png"
             }
         }
         capivara.controller(document.body, MyController);

@@ -9,9 +9,16 @@ export class CapivaraFileupload {
     private file
     private fileContent: File
     private size
+    private acceptedFiles
 
     constructor(private $scope, private $element) {
         this.element = $element
+    }
+
+    $onInit() {
+        if (this.$bindings.acceptedFiles) {
+            this.acceptedFiles = this.$bindings.acceptedFiles.split(",")
+        }
     }
 
     clearCurrentFile() {
@@ -50,14 +57,14 @@ export class CapivaraFileupload {
     uploadFile() {
         axios({
             method: 'post',
-            url: this.$bindings.url,
+            url: this.$bindings.endPoint,
             data: {
-                firstName: 'Fred',
-                lastName: 'Flintstone'
+                file: this.fileContent
             }
+        }).then(function (response) {
+            this.$bindings.cpModel = response.data
+        }).catch(function (error) {
+            console.log(error);
         })
-            .catch(function (error) {
-                console.log(error);
-            });
     }
 }
