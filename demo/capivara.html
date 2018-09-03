@@ -3,22 +3,32 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible"
+          content="ie=edge">
     <title>Demo in CapivaraJS</title>
-    <link rel="stylesheet" href="../dist/cp-file-upload.css" />
+    <link rel="stylesheet"
+          href="../dist/cp-file-upload.css" />
 </head>
 
 <body>
 
-    <cp-file-upload my-parameter="$ctrl.message"></cp-file-upload>
+    <cp-file-upload cp-model="$ctrl.cpModel"
+                    attribute="$ctrl.attribute"
+                    end-point="$ctrl.endPoint"
+                    file-max-size="$ctrl.fileMaxSize"
+                    ></cp-file-upload>
 
     <script src="../dist/cp-file-upload.js"></script>
 
     <script>
         class MyController {
             constructor() {
-                this.message = 'Hello world - CapivaraJS';
+                this.cpModel = "entity.comprovante"
+                this.attribute = "comprovante"
+                this.endPoint = "https://gumga.io/viagem-api/api/viagem/comprovantes"
+                this.fileMaxSize = 1000000000
             }
         }
         capivara.controller(document.body, MyController);

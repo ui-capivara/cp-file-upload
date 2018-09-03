@@ -7,7 +7,7 @@ import axios from 'axios';
   tag: 'cp-file-upload',
   template,
   style,
-  bindings: ['cpModel'],
+  bindings: ['cpModel', 'attribute'],
   functions: ['onUploadStart', 'onUploadComplete', 'onUploadAbort', 'onUploadError', 'deleteMethod'],
   constants: ['fileMaxSize', 'endPoint', 'acceptedFiles'],
 })
@@ -27,12 +27,20 @@ export class CapivaraFileupload extends Controller implements OnInit {
   }
 
   $onInit() {
+    if (!this.$bindings.cpModel) {
+      throw new Error("cpModel é uma parâmetro obrigatório")
+    } else if (!this.$bindings.attribute) {
+      throw new Error("attribute é uma parâmetro obrigatório")
+    } else if (!this.$constants.endPoint) {
+      throw new Error("endPoint é uma parâmetro obrigatório")
+    }
   }
 
   clearCurrentFile() {
     this.file = null
     this.size = 0
     this.fileContent = null
+    this.error = null
   }
 
   filePicker() {
@@ -45,30 +53,29 @@ export class CapivaraFileupload extends Controller implements OnInit {
   }
 
   formatBytes(bytes, decimals?) {
+    if (bytes > this.$constants.fileMaxSize) {
+      this.error = 'Tamanho do arquivo excedido!'
+      return ''
+    }
+
     if (bytes == 0) return '0 Bytes'
     var k = 1024
     var numberOfDecimals = decimals || 2
     var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
     var i = Math.floor(Math.log(bytes) / Math.log(k))
     var fileSize = parseFloat((bytes / Math.pow(k, i)).toFixed(numberOfDecimals))
-    if (this.$bindings.fileMaxSize) {
-      if (fileSize > this.$bindings.fileMaxSize) {
-        this.error = 'Tamanho do arquivo excedido!'
-        return ''
-      } else {
-        return fileSize + ' ' + sizes[i]
-      }
-    } else {
-      return fileSize + ' ' + sizes[i]
-    }
+    return fileSize + ' ' + sizes[i]
   }
 
   uploadFile() {
+    var formDataFile = new FormData()
+    formDataFile.append(this.$bindings.attribute, this.fileContent)
+
     axios({
       method: 'post',
       url: this.$bindings.endPoint,
       data: {
-        file: this.fileContent
+        file: formDataFile
       }
     }).then(function (response) {
       this.$bindings.cpModel = response.data
@@ -76,4 +83,13 @@ export class CapivaraFileupload extends Controller implements OnInit {
       console.log(error)
     })
   }
+
+  getSvgClass() {
+    if (!this.file && !this.error) {
+      return { 'svg-disabled': true }
+    } else {
+      return { 'svg-disabled': false }
+    }
+  }
+
 }
