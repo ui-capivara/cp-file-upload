@@ -21,6 +21,7 @@ export class CapivaraFileupload extends Controller implements OnInit {
   private size
   private acceptedFiles
   private error
+  private eventHandlers
 
   constructor(public $scope, public $element) {
     super($scope, $element);
@@ -33,6 +34,9 @@ export class CapivaraFileupload extends Controller implements OnInit {
       throw new Error("attribute é uma parâmetro obrigatório")
     } else if (!this.$constants.endPoint) {
       throw new Error("endPoint é uma parâmetro obrigatório")
+    }
+    this.eventHandlers = {
+        onLoadStart: this.$functions.onUploadStart
     }
   }
 
@@ -70,14 +74,21 @@ export class CapivaraFileupload extends Controller implements OnInit {
   uploadFile() {
     var formDataFile = new FormData()
     formDataFile.append(this.$bindings.attribute, this.fileContent)
-
-    axios({
-      method: 'post',
-      url: this.$bindings.endPoint,
-      data: {
-        file: formDataFile
-      }
-    }).then(function (response) {
+    if(this.$functions.onUploadStart)
+        this.eventHandlers.onLoadStart()
+    const configObject = {
+        headers: {
+            method: 'post'
+       },
+        onUploadProgress: function(progressEvent) {
+          this.eventHandlers.percentCompleted = Math.round( (progressEvent.loaded * 100) / progressEvent.total);
+          this.eventHandler.onLoadEnd = this.$functions.onUploadComplete,
+          this.eventHandler.onAbort = this.$functions.onUploadAbort,
+          this.eventHandler.onError = this.$functions.onUploadError
+        }
+    }
+    axios.put(this.$bindings.endPoint, formDataFile, configObject)
+    .then(function (response) {
       this.$bindings.cpModel = response.data
     }).catch(function (error) {
       console.log(error)
