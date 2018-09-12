@@ -9,10 +9,10 @@ O componente cp-file-upload pode ser utilizado para fazer upload de arquivos. El
 Recomendamos vincular a um número de versão específico que você possa atualizar manualmente, porém no exemplo iremos utilizar a ultima versão disponível.
 ```html
 <!-- Stylesheet -->
-<link rel="stylesheet" href="https://unpkg.com/@uicapivara/cp-counter@latest/dist/cp-file-upload.min.css">
+<link rel="stylesheet" href="https://unpkg.com/@uicapivara/cp-file-upload@latest/dist/cp-file-upload.min.css">
 
 <!-- Component -->
-<script src="https://unpkg.com/@uicapivara/cp-counter@latest/dist/cp-file-upload.min.js"></script>
+<script src="https://unpkg.com/@uicapivara/cp-file-upload@latest/dist/cp-file-upload.min.js"></script>
 ```
 Certifique-se de ler sobre as diferentes construções e use a produção, substituindo os arquivos .js por .min.js. Esta é uma compilação otimizada para velocidade em vez de experiência de desenvolvimento.
 
@@ -101,7 +101,7 @@ Um exemplo de utilização de todos os parâmetros que o componente possui, vale
                     on-upload-abort="$ctrl.uploadAbort()"
                     on-upload-error="$ctrl.uploadError()"
                     delete-method="$ctrl.remove()"
-    ></cp-file-upload>
+                    ></cp-file-upload>
 ```
 
 ```js
