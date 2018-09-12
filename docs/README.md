@@ -1,5 +1,7 @@
 # Introdução
+
 O componente cp-file-upload pode ser utilizado para fazer upload de arquivos. Ele também pode controlar o tamanho máximo e a extensão que os arquivos possuem. Além de possuir a opção de inserção de funções durante todo o envio do arquivo até o seu destino.
+
 ------
 # Instalação
 
@@ -37,8 +39,8 @@ Se chegamos até aqui, provavelmente a instalação foi finalizada êxito, isso 
 Vamos agora criar uma nova instância do componente. Para isso basta colocarmos no HTML o nome do compoente e também uma `class` que possuirá as propriedades de configuração do componente.
 
 ```html
-<cp-file-upload cp-model="$ctrl.cpModel"
-                attribute="$ctrl.attribute"
+<cp-file-upload cp-model="$ctrl.entity"
+                attribute="$ctrl.entity.comprovante"
                 end-point="$ctrl.endPoint"
                 ></cp-file-upload>
 ```
@@ -46,8 +48,9 @@ Vamos agora criar uma nova instância do componente. Para isso basta colocarmos 
 ```javascript
 class MyController {
     constructor() {
-        this.cpModel = "entity.comprovante"
-        this.attribute = "comprovante"
+        this.entity = {
+            comprovate: ''
+        }
         this.endPoint = "https://gumga.io/viagem-api/api/viagem/comprovantes"
     }
 }
@@ -71,16 +74,16 @@ O componente possui alguns parâmetros para a customização, a tabela abaixo mo
 
 | Atributo           | Tipo       | Requerido | Descrição |
 | :-----------------:| :--------: | :-------: | :--------------------------: |
-| model              | `Object`   | `Sim`     | Objeto onde será inserido o a resposta do `endpoint` |
-| attribute          | `String`   | `Sim`     | Nome do parâmetro que fará a requisição para o `endpoint` |
-| endpoint           |	`String`  | `Sim`     | URL do endpoint onde será o arquivo como POST |
-| accepted           |	`String`  | `Não`     | Extensões aceitar para upload, separadas por vírgula |
-| max-size           |	`String`  | `Não`     | Tamaho máximo aceito pelo arquivo, em bytes |
-| on-upload-start    | `Function` | `Não`     | Função que será disparada quando o upload iniciar |
-| on-upload-complete | `Function` | `Não`     | Função que será disparada quando o upload terminar |
-| on-upload-abort    | `Function` | `Não`     | Função que será disparada se o upload for abortado |
-| on-upload-error    | `Function` | `Não`     | Função que será disparada se houver algum erro |
-| delete-method      | `Function` | `Não`     | Função que será executada para deletar o aquivo do espaço temporário.|
+| cp-model           | `Object`   |   `Sim`   | Objeto onde será inserido o a resposta do `endpoint` |
+| attribute          | `String`   |   `Sim`   | Nome do parâmetro que fará a requisição para o `endpoint` |
+| endpoint           | `String`   |   `Sim`   | URL do endpoint onde será o arquivo como POST |
+| accepted           | `String`   |   `Não`   | Extensões aceitar para upload, separadas por vírgula |
+| max-size           | `String`   |   `Não`   | Tamaho máximo aceito pelo arquivo, em bytes |
+| on-upload-start    | `Function` |   `Não`   | Função que será disparada quando o upload iniciar |
+| on-upload-complete | `Function` |   `Não`   | Função que será disparada quando o upload terminar |
+| on-upload-abort    | `Function` |   `Não`   | Função que será disparada se o upload for abortado |
+| on-upload-error    | `Function` |   `Não`   | Função que será disparada se houver algum erro |
+| delete-method      | `Function` |   `Não`   | Função que será executada para deletar o aquivo do espaço temporário.|
 
 !> O cp-file-upload fará uma chamada POST para a url informada no `endpoint` com o nome do parâmetro informado no `attribute`.
 
@@ -89,10 +92,15 @@ O componente possui alguns parâmetros para a customização, a tabela abaixo mo
 Um exemplo de utilização de todos os parâmetros que o componente possui, vale lembrar que o componente possui alguns parâmetros obrigatórios para o seu funcionamento, a tabela anterior já lista quais são eles. O exemplo mostra como devemos configurar o componente com as customizações desejadas.
 
 ```html
-    <cp-file-upload cp-model="$ctrl.cpModel"
-                    attribute="$ctrl.attribute"
+    <cp-file-upload cp-model="$ctrl.entity"
+                    attribute="$ctrl.entity.comprovante"
                     end-point="$ctrl.endPoint"
                     file-max-size="$ctrl.fileMaxSize"
+                    on-upload-start="$ctrl.uploadStart()"
+                    on-upload-complete="$ctrl.uploadComplete()"
+                    on-upload-abort="$ctrl.uploadAbort()"
+                    on-upload-error="$ctrl.uploadError()"
+                    delete-method="$ctrl.remove()"
     ></cp-file-upload>
 ```
 
@@ -100,10 +108,26 @@ Um exemplo de utilização de todos os parâmetros que o componente possui, vale
     <script>
         class MyController {
             constructor() {
-                this.cpModel = "entity.comprovante"
-                this.attribute = "comprovante"
+                this.entity = {
+                    comprovate: ''
+                }
                 this.endPoint = "https://gumga.io/viagem-api/api/viagem/comprovantes"
                 this.fileMaxSize = 1000000000
+                uploadStart = function(){
+                    console.log("Comecou")
+                }
+                uploadComplete = function(){
+                    console.log("Terminou")
+                }
+                uploadAbort = function(){
+                    console.log("Abortado")
+                }
+                uploadError = function(){
+                    console.log("Erro!")
+                }
+                remove = function(){
+                    console.log("Removido com Sucesso")
+                }
             }
         }
         capivara.controller(document.body, MyController);
