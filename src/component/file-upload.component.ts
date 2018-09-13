@@ -36,7 +36,7 @@ export class CapivaraFileupload extends Controller implements OnInit {
       throw new Error("endPoint é uma parâmetro obrigatório")
     }
     this.eventHandlers = {
-        onLoadStart: this.$functions.onUploadStart
+        onLoadStart: this.$functions.onUploadStart        
     }
   }
 
